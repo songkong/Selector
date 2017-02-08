@@ -16,28 +16,29 @@ var CanvasComponent = React.createClass({displayName: "CanvasComponent",
     },
     timer: null,
     getInitialState: function () {
-        return {click: 'start', btnText: 'Start'};
+        return {click: 'start', btnText: this.props.btnText.start};
     },
     componentDidMount: function () {
-        this.initCanvas(0);
+        this.initCanvas({count: 0, text: this.props.initText, smile: false});
     },
     componentDidUpdate: function () {
         var self = this;
+        var menuLength = self.props.menuList.length;
         if (self.state.click == 'stop') {
             var count = 0;
             self.timer = setInterval(function () {
-                self.initCanvas(count++);
+                self.initCanvas({count: count++, text: self.props.menuList[Math.floor(Math.random() * menuLength)], smile: false});
             },100);
         } else {
             clearInterval(self.timer);
-            self.initCanvas(5);
+            self.initCanvas({count: 5, text: self.props.menuList[Math.floor(Math.random() * menuLength)], smile: true});
         }
     },
     clickHandler: function (e) {
         if (this.state.click == 'start') {
-            this.setState({click: 'stop', btnText: 'Stop'});
+            this.setState({click: 'stop', btnText: this.props.btnText.stop});
         } else {
-            this.setState({click: 'start', btnText: 'Start'});
+            this.setState({click: 'start', btnText: this.props.btnText.start});
         }
     },
     drawEyes: function (option) {
@@ -62,7 +63,11 @@ var CanvasComponent = React.createClass({displayName: "CanvasComponent",
         var ctx = option.ctx;
         ctx.fillStyle="#fff";
         ctx.beginPath();
-        ctx.arc(195, 450, 40, 0, Math.PI, true);
+        if (option.smile) {
+            ctx.arc(195, 420, 40, 0, Math.PI, false);
+        } else {
+            ctx.arc(195, 440, 10, 0, Math.PI * 2, true);
+        }
         ctx.fill();
         ctx.closePath();
     },
@@ -82,31 +87,48 @@ var CanvasComponent = React.createClass({displayName: "CanvasComponent",
         ctx.lineTo(252,240);
         ctx.stroke();
         ctx.fillStyle = '#fff';
-        ctx.font = "40pt Calibri";
-        ctx.fillText(text,150,150);
+        ctx.font = "32pt Calibri";
+        ctx.textAlign = 'center';
+        ctx.fillText(text,200,165,240);
     },
-    initCanvas: function (count) {
-        var deg = count* 36 + 90;
+    initCanvas: function (option) {
+        var deg = option.count* 36 + 90;
         var ctx = this.refs.canvas.getContext('2d');
         ctx.fillStyle = '#82ebc6';
         ctx.fillRect(0,0,400,500);
         this.drawEyes({ctx: ctx, direction: 'leftEye', deg: deg});
         this.drawEyes({ctx: ctx, direction: 'rightEye', deg: deg});
-        this.drawMouse({ctx: ctx});
-        this.drawBox({ctx: ctx, text: this.props.title});
+        this.drawMouse({ctx: ctx, smile: option.smile});
+        this.drawBox({ctx: ctx, text: option.text});
     },
     render: function () {
         return (
             React.createElement("div", {className: "canvas-wrapper"}, 
                 React.createElement("canvas", {ref: "canvas", width: 400, height: 500}), 
-                React.createElement("div", {style: {textAlign: 'center'}}, 
-                    React.createElement("span", {onClick: this.clickHandler, className: "btn-primary"}, this.state.btnText)
+                React.createElement("div", {className: "btn-wrapper"}, 
+                    React.createElement("div", {onClick: this.clickHandler, className: "btn-primary"}, this.state.btnText)
                 )
             )
         );
     }
 });
 /**
+ * Created by kongsong on 2017/2/8.
+ */
+var menuList = [
+    '螺狮粉',
+    '麻辣烫',
+    '麻辣小龙虾',
+    '金谷园',
+    '汉堡',
+    '烤肉',
+    '火锅',
+    '烧烤',
+    '日料',
+    '黄焖鸡',
+    '云南菜'
+];
+/**
  * Created by kongsong on 2017/2/1.
  */
-ReactDOM.render(React.createElement(CanvasComponent, {className: "canvas-wrapper", btnText: "Click Me", title: "???"}), document.getElementById('main-wrapper'));
+ReactDOM.render(React.createElement(CanvasComponent, {className: "canvas-wrapper", btnText: {start: 'Start', stop: 'Stop'}, initText: "吃什么?", menuList: this.menuList}), document.getElementById('main-wrapper'));

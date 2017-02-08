@@ -8,14 +8,26 @@ body {
 }
 .canvas-wrapper {
     width: 400px;
-    height: 546px;
+    height: 600px;
     position: absolute;
     left: 50%;
     top: 50%;
     margin: -300px 0 0 -200px;
 }
+.btn-wrapper {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    -webkit-justify-content: center;
+}
 .btn-primary {
+    width: 150px;
+    padding: 10px 10px;
+    text-align: center;
     font-size: 36px;
-    color: #fff;
+    color: #82ebc6;
     font-weight: bolder;
+    background-color: #ffee7e;
+    border-radius: 10px;
+    overflow: hidden;
 }
