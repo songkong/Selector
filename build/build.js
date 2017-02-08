@@ -2,72 +2,133 @@
  * Created by kongsong on 2017/2/2.
  */
 var CanvasComponent = React.createClass({displayName: "CanvasComponent",
-    componentDidMount: function () {
-        this.initCanvas();
-    },
     eyes: {
         leftEye: {
-            x: 250,
-            y: 700,
-            radius: 80
+            x: 125,
+            y: 350,
+            radius: 40
         },
         rightEye: {
-            x: 550,
-            y: 700,
-            radius: 80
+            x: 265,
+            y: 350,
+            radius: 40
         }
     },
-    drawEyes: function (ctx, direction) {
-        var params = this.eyes[direction];
-        ctx.lineWidth=10;
+    timer: null,
+    getInitialState: function () {
+        return {click: 'start', btnText: this.props.btnText.start};
+    },
+    componentDidMount: function () {
+        this.initCanvas({count: 0, text: this.props.initText, smile: false});
+    },
+    componentDidUpdate: function () {
+        var self = this;
+        var menuLength = self.props.menuList.length;
+        if (self.state.click == 'stop') {
+            var count = 0;
+            self.timer = setInterval(function () {
+                self.initCanvas({count: count++, text: self.props.menuList[Math.floor(Math.random() * menuLength)], smile: false});
+            },100);
+        } else {
+            clearInterval(self.timer);
+            self.initCanvas({count: 5, text: self.props.menuList[Math.floor(Math.random() * menuLength)], smile: true});
+        }
+    },
+    clickHandler: function (e) {
+        if (this.state.click == 'start') {
+            this.setState({click: 'stop', btnText: this.props.btnText.stop});
+        } else {
+            this.setState({click: 'start', btnText: this.props.btnText.start});
+        }
+    },
+    drawEyes: function (option) {
+        var ctx =  option.ctx;
+        var params = this.eyes[option.direction];
+        var deg = 2 * Math.PI / 360 * option.deg;
+        var x_offset = 21 * Math.cos(deg);
+        var y_offset = 21 * Math.sin(deg);
+        ctx.lineWidth=5;
         ctx.strokeStyle="#fff";
         ctx.beginPath();
         ctx.arc(params.x, params.y, params.radius, 0, Math.PI * 2, true);
         ctx.stroke();
         ctx.closePath();
+        ctx.fillStyle = '#fff';
         ctx.beginPath();
-        ctx.arc(params.x + 30, params.y - 30, params.radius / 4, 0, Math.PI * 2, true);
+        ctx.arc(params.x  + x_offset, params.y  + y_offset, params.radius / 4, 0, Math.PI * 2, true);
         ctx.fill();
         ctx.closePath();
     },
-    drawMouse: function (ctx) {
+    drawMouse: function (option) {
+        var ctx = option.ctx;
         ctx.fillStyle="#fff";
         ctx.beginPath();
-        ctx.arc(400, 900, 80, 0, Math.PI, true);
+        if (option.smile) {
+            ctx.arc(195, 420, 40, 0, Math.PI, false);
+        } else {
+            ctx.arc(195, 440, 10, 0, Math.PI * 2, true);
+        }
         ctx.fill();
         ctx.closePath();
     },
-    initCanvas: function () {
-        const ctx = this.refs.canvas.getContext('2d');
-        ctx.fillStyle = '#82ebc6';
-        ctx.fillRect(0,0,800,1000);
-        ctx.fillStyle = '#fff';
-        this.drawEyes(ctx, 'leftEye');
-        this.drawEyes(ctx, 'rightEye');
-        this.drawMouse(ctx);
+    drawBox: function (option) {
+        var ctx = option.ctx;
+        var text = option.text;
         ctx.strokeStyle="#fff";
-        ctx.moveTo(525, 550);
-        ctx.lineTo(510, 480);
-        ctx.moveTo(525, 550);
-        ctx.lineTo(570, 480);
-        ctx.lineTo(650, 480);
-        ctx.arcTo(690, 480, 690, 440, 40);
-        ctx.arcTo(690, 120, 650, 120, 40);
-        ctx.arcTo(110, 120, 110, 160, 40);
-        ctx.arcTo(110, 480, 150, 480, 40);
-        ctx.lineTo(513,480);
+        ctx.moveTo(264, 275);
+        ctx.lineTo(250, 240);
+        ctx.moveTo(263, 275);
+        ctx.lineTo(285, 240);
+        ctx.lineTo(325, 240);
+        ctx.arcTo(345, 240, 345, 220, 20);
+        ctx.arcTo(345, 60, 325, 60, 20);
+        ctx.arcTo(55, 60, 55, 80, 20);
+        ctx.arcTo(55, 240, 75, 240, 20);
+        ctx.lineTo(252,240);
         ctx.stroke();
+        ctx.fillStyle = '#fff';
+        ctx.font = "32pt Calibri";
+        ctx.textAlign = 'center';
+        ctx.fillText(text,200,165,240);
+    },
+    initCanvas: function (option) {
+        var deg = option.count* 36 + 90;
+        var ctx = this.refs.canvas.getContext('2d');
+        ctx.fillStyle = '#82ebc6';
+        ctx.fillRect(0,0,400,500);
+        this.drawEyes({ctx: ctx, direction: 'leftEye', deg: deg});
+        this.drawEyes({ctx: ctx, direction: 'rightEye', deg: deg});
+        this.drawMouse({ctx: ctx, smile: option.smile});
+        this.drawBox({ctx: ctx, text: option.text});
     },
     render: function () {
         return (
-            React.createElement("div", null, 
-                React.createElement("canvas", {ref: "canvas", width: 800, height: 1000}), 
-                React.createElement("span", null, "Click Me")
+            React.createElement("div", {className: "canvas-wrapper"}, 
+                React.createElement("canvas", {ref: "canvas", width: 400, height: 500}), 
+                React.createElement("div", {className: "btn-wrapper"}, 
+                    React.createElement("div", {onClick: this.clickHandler, className: "btn-primary"}, this.state.btnText)
+                )
             )
         );
     }
 });
 /**
+ * Created by kongsong on 2017/2/8.
+ */
+var menuList = [
+    '螺狮粉',
+    '麻辣烫',
+    '麻辣小龙虾',
+    '金谷园',
+    '汉堡',
+    '烤肉',
+    '火锅',
+    '烧烤',
+    '日料',
+    '黄焖鸡',
+    '云南菜'
+];
+/**
  * Created by kongsong on 2017/2/1.
  */
-ReactDOM.render(React.createElement(CanvasComponent, null), document.getElementById('example'));
+ReactDOM.render(React.createElement(CanvasComponent, {className: "canvas-wrapper", btnText: {start: 'Start', stop: 'Stop'}, initText: "吃什么?", menuList: this.menuList}), document.getElementById('main-wrapper'));
