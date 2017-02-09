@@ -112,3 +112,4 @@ var CanvasComponent = React.createClass({
         );
     }
 });
+module.exports = CanvasComponent;

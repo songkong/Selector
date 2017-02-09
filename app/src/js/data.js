@@ -14,3 +14,4 @@ var menuList = [
     '黄焖鸡',
     '云南菜'
 ];
+module.exports = menuList;
