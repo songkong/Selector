@@ -31,3 +31,61 @@ body {
     border-radius: 10px;
     overflow: hidden;
 }
+
+.menu-wrapper {
+    position: absolute;
+    z-index: 10;
+    width: 380px;
+    height: 600px;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row ;
+    top: 50%;
+    right: 0;
+    margin-top: -300px;
+}
+.btn-slide {
+    width: 80px;
+    height: 50px;
+    font-size: 36px;
+    text-align: center;
+    color: #82ebc6;
+    background-color: #fff;
+    margin-top: 440px;
+    border-radius: 10px 0 0 10px;
+}
+.menu-body {
+    box-sizing: border-box;
+    width: 300px;
+    height: 600px;
+    background-color: #fff;
+    border-radius: 10px 0 0 10px;
+    padding: 20px;
+    overflow: hidden;
+}
+/*.input-wrapper {*/
+    /*width: 260px;*/
+/*}*/
+/*.menu-input {*/
+    /*height: 40px;*/
+    /*width: 200px;*/
+    /*border: 1px solid #82ebc6;*/
+    /*border-radius: 10px;*/
+/*}*/
+/*.menu-detail {*/
+    /*height: 500px;*/
+    /*padding: 0;*/
+    /*overflow-y: scroll;*/
+    /*overflow-x: hidden;*/
+/*}*/
+/*.menu-detail .menu-item {*/
+    /*width: 260px;*/
+    /*list-style: none;*/
+    /*font-size: 22px;*/
+    /*margin: 10px 0;*/
+    /*color: #999;*/
+/*}*/
+/*.menu-detail .menu-item:nth-child(even){*/
+    /*background-color: #fff5db;*/
+/*}*/

@@ -1,3 +1,4 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Created by kongsong on 2017/2/2.
  */
@@ -112,6 +113,9 @@ var CanvasComponent = React.createClass({displayName: "CanvasComponent",
         );
     }
 });
+module.exports = CanvasComponent;
+
+},{}],2:[function(require,module,exports){
 /**
  * Created by kongsong on 2017/2/8.
  */
@@ -126,9 +130,92 @@ var menuList = [
     '烧烤',
     '日料',
     '黄焖鸡',
-    '云南菜'
+    '云南菜',
+    '烤鱼',
+    '重庆小面',
+    '博士局',
+    '食堂',
+    '川菜',
+    '韩餐'
 ];
+module.exports = menuList;
+
+},{}],3:[function(require,module,exports){
+/**
+ * Created by kongsong on 2017/2/9.
+ */
+var InputComponent = React.createClass({displayName: "InputComponent",
+    render: function () {
+        return (
+            React.createElement("div", {className: "input-wrapper"}, 
+                React.createElement("input", {type: "text", name: "test", value: "test", className: "menu-input"})
+            )
+        );
+    }
+});
+module.exports = InputComponent;
+
+},{}],4:[function(require,module,exports){
+/**
+ * Created by kongsong on 2017/2/9.
+ */
+var ListComponent = React.createClass({displayName: "ListComponent",
+    render: function () {
+        return (
+            React.createElement("li", {className: "menu-item"}, this.props.listText, React.createElement("span", null, "delete"))
+        );
+    }
+});
+module.exports = ListComponent;
+
+},{}],5:[function(require,module,exports){
 /**
  * Created by kongsong on 2017/2/1.
  */
-ReactDOM.render(React.createElement(CanvasComponent, {className: "canvas-wrapper", btnText: {start: 'Start', stop: 'Stop'}, initText: "吃什么?", menuList: this.menuList}), document.getElementById('main-wrapper'));
+var menuList = require('./data.js');
+var CanvasComponent = require('./canvas.js');
+var MenuComponent = require('./menu.js');
+ReactDOM.render(
+    React.createElement("div", null, 
+        React.createElement(MenuComponent, {menuList: menuList, menuText: "More"}), 
+        React.createElement(CanvasComponent, {className: "canvas-wrapper", btnText: {start: 'Start', stop: 'Stop'}, initText: "吃什么?", menuList: menuList})
+    )
+    , document.getElementById('main-wrapper'));
+
+},{"./canvas.js":1,"./data.js":2,"./menu.js":6}],6:[function(require,module,exports){
+/**
+ * Created by kongsong on 2017/2/9.
+ */
+var ListComponent = require('./list');
+var InputComponent = require('./input');
+var MenuComponent = React.createClass({displayName: "MenuComponent",
+    getInitialState: function () {
+        return {menuShowed: false, menuOffset: -300};
+    },
+    clickHandler: function () {
+        if (this.state.menuShowed) {
+            this.setState({menuShowed: false, menuOffset: 0});
+        } else {
+            this.setState({menuShowed: true, menuOffset: -300});
+        }
+    },
+    render: function () {
+        return (
+            React.createElement("div", {className: "menu-wrapper", style: {right: this.state.menuOffset}}, 
+                React.createElement("div", {className: "btn-slide", onClick: this.clickHandler}, this.props.menuText), 
+                React.createElement("div", {className: "menu-body"}, 
+                    React.createElement("ul", {className: "menu-detail"}, 
+                        
+                            this.props.menuList.map(function(item, index){
+                                return React.createElement(ListComponent, {listText: item, key: index});
+                            })
+                        
+                    )
+                )
+            )
+        );
+    }
+});
+module.exports = MenuComponent;
+
+},{"./input":3,"./list":4}]},{},[5]);
