@@ -6,22 +6,16 @@ var reactify = require("reactify");
 
 var path = {
     HTML: 'app/src/index.html',
-    LIB: 'app/src/lib/*.js',
     ALL: ['app/src/js/*.js', 'app/src/js/*/*.js', 'app/src/index.html', 'app/src/css/*.css'],
     CSS: 'app/src/css/*.css',
+    CSS_VENDOR: 'app/src/css/vendor/**',
     CONCATED_OUT_JS: 'build.js',
     CONCATED_OUT_CSS: 'build.css',
     DEST_BUILD: 'app/dist/build',
-    DEST_LIB: 'app/dist/lib',
     DEST: 'app/dist',
+    DEST_VENDOR: 'app/dist/vendor',
     ENTRY_POINT: 'app/src/js/main.js'
 };
-
-// Move lib
-gulp.task('moveLib', function () {
-    gulp.src(path.LIB)
-        .pipe(gulp.dest(path.DEST_LIB));
-});
 
 // Move html
 gulp.task('moveHTML', function () {
@@ -34,6 +28,10 @@ gulp.task('buildCSS', function () {
     gulp.src(path.CSS)
         .pipe(concat(path.CONCATED_OUT_CSS))
         .pipe(gulp.dest(path.DEST_BUILD));
+});
+gulp.task('copyCSS', function () {
+    gulp.src(path.CSS_VENDOR)
+        .pipe(gulp.dest(path.DEST_VENDOR));
 });
 
 // Transform JSX to JS
@@ -49,9 +47,9 @@ gulp.task('buildJS', function () {
 
 // Watch the change of all files
 gulp.task('watch', function () {
-    gulp.watch(path.ALL, ['transform', 'moveLib', 'moveHTML', 'buildCSS', 'buildJS']);
+    gulp.watch(path.ALL, [ 'moveHTML', 'buildCSS', 'buildJS', 'copyCSS']);
 });
 
-gulp.task('default', ['watch', 'moveLib', 'buildCSS', 'moveHTML', 'buildJS']);
+gulp.task('default', ['watch', 'buildCSS', 'moveHTML', 'buildJS', 'copyCSS']);
 
 
