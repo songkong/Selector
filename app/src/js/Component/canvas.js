@@ -28,8 +28,8 @@ var CanvasComponent = React.createClass({
             self.timer = setInterval(function () {
                 self.initCanvas({count: count++, text: self.props.menuList[Math.floor(Math.random() * menuLength)].value, smile: false});
             },100);
-        } else if(self.props.isBlankTextShowed) {
-            self.initCanvas({count: 0, text: self.props.blankText, smile: false});
+        } else if(self.props.isEmptyTextShowed) {
+            self.initCanvas({count: 0, text: self.props.emptyText, smile: false});
         } else if(self.timer){
             clearInterval(self.timer);
             self.timer = null;
@@ -114,7 +114,7 @@ var CanvasComponent = React.createClass({
 function mapStateToProps(state)  {
     return {
         beginSelect: state.beginSelect,
-        isBlankTextShowed: state.isBlankTextShowed,
+        isEmptyTextShowed: state.isEmptyTextShowed,
         menuList: state.menuList
     };
 }

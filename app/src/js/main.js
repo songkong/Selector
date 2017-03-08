@@ -18,7 +18,7 @@ ReactDOM.render(
     <Provider store={store}>
         <div>
             <MenuComponent />
-            <CanvasComponent className = 'canvas-wrapper' btnText = {{start: 'Start', stop: 'Stop'}} initText = '吃什么?' blankText = "菜单空空如也"/>
+            <CanvasComponent className = 'canvas-wrapper' btnText = {{start: 'Start', stop: 'Stop'}} initText = '吃什么?' emptyText = "菜单空空如也"/>
         </div>
     </Provider>
     , document.getElementById('main-wrapper'));
