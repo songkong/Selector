@@ -111,8 +111,8 @@ body {
     /*width: 260px;*/
     list-style: none;
     font-size: 22px;
-    margin: 5px 15px 5px 0;
-    padding: 5px 0;
+    margin: 5px 0 5px 0;
+    padding: 5px 15px 5px 15px;
     color: #999;
     display: flex;
     display: -webkit-flex;
