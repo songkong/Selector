@@ -1,0 +1,22 @@
+{
+  "name": "selector",
+  "version": "1.0.0",
+  "description": "A React App",
+  "main": "main.js",
+  "scripts": {
+    "start": "gulp"
+  },
+  "author": "Song Kong",
+  "devDependencies": {
+    "browserify": "^14.0.0",
+    "gulp": "^3.9.1",
+	"gulp-concat": "^2.6.1",
+    "gulp-uglify": "^2.0.1",
+	"react": "^15.4.2",
+    "react-dom": "^15.4.2",
+	"reactify": "^1.1.1",
+	"react-redux": "^5.0.2",
+	"redux": "^3.6.0",
+	"vinyl-source-stream": "^1.1.0"
+  }
+}
