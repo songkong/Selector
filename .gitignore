@@ -2,4 +2,4 @@
 .git
 node_modules
 Selector.xcworkspace
-.DS_Stores
+.DS_Store

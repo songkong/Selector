@@ -89,6 +89,10 @@ function reducer(state, action) {
             local.remove(action.id);
             return updateState(state.beginSelect, state.isMenuShowed, state.isEmptyTextShowed);
         case type.INSERT_ITEM:
+            // Only add distinct elements
+            if (local.get(action.value) != -1) {
+                break;
+            }
             local.set(local.get('nextId'), action.value);
             local.set('nextId', parseInt(local.get('nextId')) + 1);
             return updateState(state.beginSelect, state.isMenuShowed, false);

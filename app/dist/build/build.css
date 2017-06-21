@@ -120,9 +120,39 @@ body {
     align-items: center;
     -webkit-align-items: center;
 }
+.menu-detail .menu-item:nth-child(even){
+    background-color: #fff5db;
+}
+@keyframes shake{
+
+    0% {
+        transform: rotate(-15deg);
+    }
+    50% {
+        transform: rotate(15deg);
+    }
+    100% {
+        transform: rotate(-15deg);
+    }
+}
+@-webkit-keyframes shake{
+
+    0% {
+        -webkit-transform: rotate(-15deg);
+    }
+    50% {
+        -webkit-transform: rotate(15deg);
+    }
+    100% {
+        -webkit-transform: rotate(-15deg);
+    }
+}
 .menu-detail .menu-item .btn-delete{
     font-size: 20px;
 }
-.menu-detail .menu-item:nth-child(even){
-    background-color: #fff5db;
+.menu-detail .menu-item .btn-delete:hover {
+    animation-name: shake;
+    animation-duration: 2s;
+    -webkit-animation-name: shake;
+    -webkit-animation-duration: 2s;
 }
